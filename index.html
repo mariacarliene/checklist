@@ -11,6 +11,11 @@ h3 { margin-top: 20px; }
 .item { display: flex; margin: 5px 0; }
 input:checked + span { text-decoration: line-through; color: #888; }
 button { padding: 10px; margin-top: 15px; background: #d93025; color: white; border: none; border-radius: 5px; }
+
+#progresso {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
 </style>
 </head>
 <body>
@@ -104,17 +109,14 @@ secoes.forEach(secao => {
   });
 });
 
-// mostra progresso
+// mostra progresso com porcentagem
 function atualizarProgresso() {
   const feitos = document.querySelectorAll("input:checked").length;
-  document.getElementById("progresso").innerText = `Progresso: ${feitos}/${totalItems}`;
+  const porcentagem = Math.round((feitos / totalItems) * 100);
+  document.getElementById("progresso").innerText = `Progresso: ${feitos}/${totalItems} (${porcentagem}%)`;
 }
 
-function resetar() {
-  localStorage.clear();
-  location.reload();
-}
-
+// inicializa progresso
 atualizarProgresso();
 </script>
 
