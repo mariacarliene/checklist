@@ -43,3 +43,4 @@ jobs:
 
       # 📝 Comentário opcional
       # Este workflow gera o build automaticamente e publica no Pages.
+      #Removendo workflow de deploy
