@@ -15,6 +15,5 @@ jobs:
     - uses: actions/upload-pages-artifact@v1
       with:
         path: ./
-    - uses: actions/deploy-pages@v1 
+    - uses: actions/deploy-pages@v1
     Removendo workflow de deploy
-    
