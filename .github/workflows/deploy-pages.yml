@@ -1,5 +1,6 @@
 name: Deploy Pages
 
+# Dispara o workflow sempre que houver push na branch main
 on:
   push:
     branches: [ "main" ]
@@ -8,16 +9,24 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pages: write
+      contents: read    # Permite ler os arquivos do repositório
+      pages: write      # Permite escrever no GitHub Pages
+
     steps:
+      # 1️⃣ Faz checkout do repositório
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2️⃣ Prepara os arquivos para o GitHub Pages
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./   # publica todos os arquivos do repositório
+          path: ./   # Publica todo o conteúdo da raiz do repositório
 
+      # 3️⃣ Publica os arquivos no GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
+
+      # 📝 Comentário opcional: notas para você
+      # Aqui você pode colocar comentários como este para lembrar
+      # que este workflow é responsável por publicar seu site.
