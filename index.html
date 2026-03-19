@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Bíblia</title>
+
+<style>
+body { font-family: sans-serif; padding:20px; background:#f4f4f9;}
+.item { display:flex; margin:10px 0;}
+input:checked + span { text-decoration: line-through; color:gray;}
+button { padding:10px; background:red; color:white; border:none;}
+</style>
+</head>
+
+<body>
+
+<h2>📖 Novo Testamento</h2>
+<p id="progresso"></p>
+<button onclick="resetar()">Resetar</button>
+
+<label class="item"><input type="checkbox"><span>Lucas</span></label>
+<label class="item"><input type="checkbox"><span>João</span></label>
+<label class="item"><input type="checkbox"><span>Mateus</span></label>
+<label class="item"><input type="checkbox"><span>Marcos</span></label>
+
+<script>
+const cbs = document.querySelectorAll("input");
+
+cbs.forEach((cb,i)=>{
+ if(localStorage.getItem(i)=="true") cb.checked=true;
+
+ cb.addEventListener("change",()=>{
+  localStorage.setItem(i,cb.checked);
+  atualizar();
+ });
+});
+
+function atualizar(){
+ let total=cbs.length;
+ let ok=document.querySelectorAll("input:checked").length;
+ document.getElementById("progresso").innerText="Progresso: "+ok+"/"+total;
+}
+
+function resetar(){
+ localStorage.clear();
+ location.reload();
+}
+
+atualizar();
+</script>
+
+</body>
+</html>
