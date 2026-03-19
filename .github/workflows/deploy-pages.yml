@@ -1,4 +1,4 @@
-name: Deploy Pages
+name: Deploy Pages (with Build)
 
 # Dispara o workflow sempre que houver push na branch main
 on:
@@ -9,24 +9,37 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read    # Permite ler os arquivos do repositório
-      pages: write      # Permite escrever no GitHub Pages
+      contents: read
+      pages: write
 
     steps:
       # 1️⃣ Faz checkout do repositório
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Prepara os arquivos para o GitHub Pages
+      # 2️⃣ Configura Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # você pode mudar para a versão do seu projeto
+
+      # 3️⃣ Instala dependências do projeto
+      - name: Install dependencies
+        run: npm install
+
+      # 4️⃣ Gera o build do projeto
+      - name: Build project
+        run: npm run build  # ajuste se o comando do seu projeto for diferente
+
+      # 5️⃣ Prepara a pasta de build para o GitHub Pages
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./   # Publica todo o conteúdo da raiz do repositório
+          path: ./build  # ajuste se a sua pasta de build for diferente
 
-      # 3️⃣ Publica os arquivos no GitHub Pages
+      # 6️⃣ Publica os arquivos no GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
 
-      # 📝 Comentário opcional: notas para você
-      # Aqui você pode colocar comentários como este para lembrar
-      # que este workflow é responsável por publicar seu site.
+      # 📝 Comentário opcional
+      # Este workflow gera o build automaticamente e publica no Pages.
