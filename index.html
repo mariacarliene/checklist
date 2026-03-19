@@ -3,51 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checklist Bíblia</title>
-
+<title>Checklist - Ordem de Leitura NT</title>
 <style>
-body { font-family: sans-serif; padding:20px; background:#f4f4f9;}
-.item { display:flex; margin:10px 0;}
-input:checked + span { text-decoration: line-through; color:gray;}
-button { padding:10px; background:red; color:white; border:none;}
+body { font-family: sans-serif; padding: 20px; background: #f4f4f9; }
+h2 { color: #0056b3; }
+h3 { margin-top: 20px; }
+.item { display: flex; margin: 5px 0; }
+input:checked + span { text-decoration: line-through; color: #888; }
+button { padding: 10px; margin-top: 15px; background: #d93025; color: white; border: none; border-radius: 5px; }
 </style>
 </head>
-
 <body>
 
-<h2>📖 Novo Testamento</h2>
+<h2>ORDEM DE LEITURA (NOVO TESTAMENTO)</h2>
 <p id="progresso"></p>
 <button onclick="resetar()">Resetar</button>
 
-<label class="item"><input type="checkbox"><span>Lucas</span></label>
-<label class="item"><input type="checkbox"><span>João</span></label>
-<label class="item"><input type="checkbox"><span>Mateus</span></label>
-<label class="item"><input type="checkbox"><span>Marcos</span></label>
+<div id="conteudo"></div>
 
 <script>
-const cbs = document.querySelectorAll("input");
+const secoes = [
+  {
+    titulo: "🔵 Vida de Jesus e Início da Igreja",
+    itens: [
+      { texto: "Lucas: Lucas (médico e companheiro de Paulo) - Relato histórico da vida de Cristo." },
+      { texto: "João: Apóstolo João." },
+      { texto: "Mateus: Mateus (Levi), o publicano e apóstolo." },
+      { texto: "Marcos: João Marcos (discípulo de Pedro)." },
+      { texto: "Atos 1 a 12: Lucas - O início da Igreja em Jerusalém." },
+      { texto: "Tiago: Tiago (irmão de Jesus e líder em Jerusalém)." }
+    ]
+  },
+  {
+    titulo: "🔴 As Viagens Missionárias (Intercalado com Atos)",
+    itens: [
+      { texto: "Atos 13 e 14: Lucas." },
+      { texto: "Gálatas: Apóstolo Paulo." },
+      { texto: "Atos 15 até 18:11: Lucas." },
+      { texto: "1 Tessalonicenses: Apóstolo Paulo." },
+      { texto: "2 Tessalonicenses: Apóstolo Paulo." },
+      { texto: "Atos 18:12 até 19:10: Lucas." },
+      { texto: "1 Coríntios: Apóstolo Paulo." },
+      { texto: "Atos 19:11 até 20:1: Lucas." },
+      { texto: "2 Coríntios: Apóstolo Paulo." },
+      { texto: "Atos 20:2: Lucas." },
+      { texto: "Romanos: Apóstolo Paulo." },
+      { texto: "Atos 20:3 até 28:31: Lucas - A viagem de Paulo para Roma." }
+    ]
+  },
+  {
+    titulo: "🔴 Cartas da Prisão e Epístolas Finais",
+    itens: [
+      { texto: "Efésios: Apóstolo Paulo." },
+      { texto: "Filipenses: Apóstolo Paulo." },
+      { texto: "Colossenses: Apóstolo Paulo." },
+      { texto: "Filemom: Apóstolo Paulo." },
+      { texto: "Hebreus: Autoria anônima (atribuída a Paulo, Barnabé ou Apolo)." },
+      { texto: "1 Timóteo: Apóstolo Paulo." },
+      { texto: "Tito: Apóstolo Paulo." },
+      { texto: "1 Pedro: Apóstolo Pedro." },
+      { texto: "2 Pedro: Apóstolo Pedro." },
+      { texto: "2 Timóteo: Apóstolo Paulo (sua última carta e despedida)." },
+      { texto: "Judas: Judas (irmão de Jesus e de Tiago)." },
+      { texto: "1 João: Apóstolo João." },
+      { texto: "2 João: Apóstolo João." },
+      { texto: "3 João: Apóstolo João." },
+      { texto: "Apocalipse: Apóstolo João (A revelação final)." }
+    ]
+  }
+];
 
-cbs.forEach((cb,i)=>{
- if(localStorage.getItem(i)=="true") cb.checked=true;
+const container = document.getElementById("conteudo");
 
- cb.addEventListener("change",()=>{
-  localStorage.setItem(i,cb.checked);
-  atualizar();
- });
+// cria checkboxes e carrega estados salvos
+let totalItems = 0;
+secoes.forEach(secao => {
+  const h3 = document.createElement("h3");
+  h3.innerText = secao.titulo;
+  container.appendChild(h3);
+  
+  secao.itens.forEach(item => {
+    const label = document.createElement("label");
+    label.className = "item";
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    
+    const span = document.createElement("span");
+    span.textContent = item.texto;
+
+    if (localStorage.getItem(item.texto) === "true") cb.checked = true;
+
+    cb.addEventListener("change", () => {
+      localStorage.setItem(item.texto, cb.checked);
+      atualizarProgresso();
+    });
+
+    label.appendChild(cb);
+    label.appendChild(span);
+    container.appendChild(label);
+    totalItems++;
+  });
 });
 
-function atualizar(){
- let total=cbs.length;
- let ok=document.querySelectorAll("input:checked").length;
- document.getElementById("progresso").innerText="Progresso: "+ok+"/"+total;
+// mostra progresso
+function atualizarProgresso() {
+  const feitos = document.querySelectorAll("input:checked").length;
+  document.getElementById("progresso").innerText = `Progresso: ${feitos}/${totalItems}`;
 }
 
-function resetar(){
- localStorage.clear();
- location.reload();
+function resetar() {
+  localStorage.clear();
+  location.reload();
 }
 
-atualizar();
+atualizarProgresso();
 </script>
 
 </body>
